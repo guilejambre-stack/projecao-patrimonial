@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeção Patrimonial — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bgPage:  #F4F5F7;
+  --bgCard:  #FFFFFF;
+  --border:  #E5E7EB;
+  --textPrimary:   #1A2332;
+  --textSecondary: #6B7280;
+  --textTertiary:  #9CA3AF;
+  --blue:    #2563EB;
+  --blueLight: #EFF6FF;
+  --font: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  background: var(--bgPage);
+  font-family: var(--font);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  background: var(--bgCard);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 40px 36px 36px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  text-align: center;
+}
+
+.brand-logo {
+  margin: 0 auto 24px;
+  width: 180px;
+}
+.brand-logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-title {
+  font-size: 18px; font-weight: 600;
+  color: var(--textPrimary);
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.card-sub {
+  font-size: 13px;
+  color: var(--textSecondary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+/* Botão Google */
+.btn-google {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 11px 16px;
+  background: var(--bgCard);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 13px; font-weight: 500;
+  color: var(--textPrimary);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+}
+
+.btn-google:hover {
+  background: var(--bgPage);
+  border-color: #D1D5DB;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.btn-google:active { transform: scale(0.99); }
+
+/* Google "G" SVG */
+.google-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 20px 0;
+}
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-text { font-size: 11px; color: var(--textTertiary); }
+
+/* Footer do card */
+.card-footer {
+  margin-top: 24px;
+  font-size: 11px;
+  color: var(--textTertiary);
+  line-height: 1.6;
+}
+
+/* Estado de loading */
+.btn-google.loading {
+  pointer-events: none;
+  color: var(--textTertiary);
+}
+
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: none;
+}
+
+.btn-google.loading .spinner { display: block; }
+.btn-google.loading .google-icon { display: none; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Mensagem de erro */
+.error-msg {
+  display: none;
+  margin-top: 12px;
+  padding: 9px 12px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #DC2626;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="brand-logo">
+    <img src="use.jpg" alt="Use mas não Abuse">
+  </div>
+
+  <div class="card-title">Projeção Patrimonial</div>
+  <div class="card-sub">Planejamento de aposentadoria e<br>independência financeira</div>
+
+  <button class="btn-google" id="btnGoogle" onclick="loginGoogle()">
+    <svg class="google-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+      <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+      <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
+      <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z" fill="#EA4335"/>
+    </svg>
+    <div class="spinner"></div>
+    Entrar com Google
+  </button>
+
+  <div class="error-msg" id="errorMsg"></div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-text">acesso seguro via OAuth 2.0</span>
+    <div class="divider-line"></div>
+  </div>
+
+
+
+</div>
+
+<script>
+  // Verifica se já está logado ao carregar
+  window.addEventListener('load', () => {
+    const user = sessionStorage.getItem('gp_user');
+    if (user) {
+      window.location.href = 'planejamento-financeiro.html';
+    }
+  });
+
+  function loginGoogle() {
+    const btn = document.getElementById('btnGoogle');
+    btn.classList.add('loading');
+    btn.querySelector('span') && (btn.querySelector('span').textContent = 'Conectando...');
+
+    // Carrega o SDK do Google Identity Services
+    if (typeof google === 'undefined') {
+      loadGoogleSDK();
+    } else {
+      initGoogleLogin();
+    }
+  }
+
+  function loadGoogleSDK() {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.onload = initGoogleLogin;
+    script.onerror = () => showError('Não foi possível conectar ao Google. Verifique sua conexão.');
+    document.head.appendChild(script);
+  }
+
+  function initGoogleLogin() {
+    // CLIENT_ID: substitua pelo seu Google OAuth Client ID
+    const CLIENT_ID = 'SEU_GOOGLE_CLIENT_ID_AQUI';
+
+    if (CLIENT_ID === 'SEU_GOOGLE_CLIENT_ID_AQUI') {
+      // Modo demonstração — simula login sem OAuth real
+      setTimeout(() => {
+        sessionStorage.setItem('gp_user', JSON.stringify({
+          name: 'Usuário Demo',
+          email: 'demo@gmail.com',
+          picture: null
+        }));
+        window.location.href = 'planejamento-financeiro.html';
+      }, 1200);
+      return;
+    }
+
+    google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: handleCredential,
+      auto_select: false,
+    });
+
+    google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        // Fallback: abre popup
+        google.accounts.id.renderButton(
+          document.createElement('div'),
+          { theme: 'outline', size: 'large' }
+        );
+        showError('Popup bloqueado. Permita popups para este site e tente novamente.');
+        document.getElementById('btnGoogle').classList.remove('loading');
+      }
+    });
+  }
+
+  function handleCredential(response) {
+    // Decodifica o JWT do Google (payload em base64)
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    sessionStorage.setItem('gp_user', JSON.stringify({
+      name:    payload.name,
+      email:   payload.email,
+      picture: payload.picture
+    }));
+    window.location.href = 'planejamento-financeiro.html';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+    document.getElementById('btnGoogle').classList.remove('loading');
+  }
+</script>
+
+</body>
+</html>
