@@ -18,6 +18,7 @@ export function PortalTopbar({ profile }: { profile: Profile }) {
 
   async function handleLogout() {
     const supabase = createClient();
+    document.cookie = "user_role=; path=/; max-age=0";
     await supabase.auth.signOut();
     router.push("/login");
   }

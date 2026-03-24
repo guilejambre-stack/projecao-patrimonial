@@ -26,7 +26,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Dashboard</h1>
+      <h1 className="text-xl font-semibold">Painel</h1>
 
       <div className="grid grid-cols-3 gap-4">
         <KPICard

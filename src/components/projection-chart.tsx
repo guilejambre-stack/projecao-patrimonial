@@ -44,13 +44,13 @@ export function ProjectionChart({ series }: ProjectionChartProps) {
           <ComposedChart data={data} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
             <XAxis
               dataKey="age"
-              tick={{ fill: "#94A3B8", fontSize: 11 }}
+              tick={{ fill: "#64748B", fontSize: 11 }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => (v % 5 === 0 ? String(v) : "")}
             />
             <YAxis
-              tick={{ fill: "#94A3B8", fontSize: 11 }}
+              tick={{ fill: "#64748B", fontSize: 11 }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) =>
@@ -63,8 +63,8 @@ export function ProjectionChart({ series }: ProjectionChartProps) {
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "#1A1D26",
-                border: "1px solid #2A2D36",
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E2E8F0",
                 borderRadius: "8px",
                 fontSize: 12,
               }}
