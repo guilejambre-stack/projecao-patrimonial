@@ -1,0 +1,11 @@
+-- NOTE: Run this AFTER creating a planner user via the app.
+-- Replace 'PLANNER_UUID' with the actual auth.users id of your planner account.
+-- You can find this UUID in the Supabase Dashboard > Authentication > Users.
+-- This seed is for local development only.
+
+-- Example: insert test clients for the planner
+-- insert into public.clients (planner_id, full_name, email, phone, occupation)
+-- values
+--   ('PLANNER_UUID', 'Maria Silva', 'maria@email.com', '11999990001', 'Medica'),
+--   ('PLANNER_UUID', 'Joao Santos', 'joao@email.com', '11999990002', 'Engenheiro'),
+--   ('PLANNER_UUID', 'Ana Oliveira', 'ana@email.com', '11999990003', 'Empresaria');
