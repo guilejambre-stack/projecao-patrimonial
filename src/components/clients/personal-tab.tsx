@@ -13,9 +13,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { updateClientAction, inviteClientToPortalAction } from "@/app/dashboard/clients/[id]/actions";
+import { deleteClientAction } from "@/app/dashboard/clients/actions";
+import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
 import type { Client } from "@/types";
 
 export function PersonalTab({ client }: { client: Client }) {
+  const router = useRouter();
+
   async function handleSave(formData: FormData) {
     await updateClientAction(client.id, formData);
   }
@@ -23,6 +28,12 @@ export function PersonalTab({ client }: { client: Client }) {
   async function handleInvite() {
     if (!client.email) return;
     await inviteClientToPortalAction(client.id, client.email);
+  }
+
+  async function handleDelete() {
+    if (!confirm(`Tem certeza que deseja excluir o cliente "${client.full_name}"? Esta acao nao pode ser desfeita.`)) return;
+    await deleteClientAction(client.id);
+    router.push("/dashboard/clients");
   }
 
   return (
@@ -86,6 +97,17 @@ export function PersonalTab({ client }: { client: Client }) {
           {client.portal_user_id && (
             <Badge variant="default" className="text-xs">Portal ativo</Badge>
           )}
+          <div className="flex-1" />
+          <Button
+            type="button"
+            variant="destructive"
+            size="sm"
+            className="gap-1.5"
+            onClick={handleDelete}
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            Excluir Cliente
+          </Button>
         </div>
       </form>
     </div>

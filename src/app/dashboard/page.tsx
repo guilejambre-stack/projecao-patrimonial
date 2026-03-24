@@ -12,7 +12,7 @@ export default async function DashboardPage() {
       id, full_name, updated_at, portal_user_id,
       financial_profile (current_assets, desired_retirement_income, social_security_income, other_income, monthly_contribution, retirement_age, life_expectancy)
     `)
-    .order("updated_at", { ascending: false });
+    .order("full_name", { ascending: true });
 
   const allClients = clients ?? [];
   const totalClients = allClients.length;
@@ -21,8 +21,6 @@ export default async function DashboardPage() {
     (sum, c: any) => sum + (c.financial_profile?.current_assets ?? 0),
     0
   );
-
-  const recentClients = allClients.slice(0, 5);
 
   return (
     <div className="space-y-6">
@@ -48,10 +46,10 @@ export default async function DashboardPage() {
 
       <div className="bg-card border border-border rounded-xl overflow-hidden">
         <div className="px-5 py-3.5 border-b border-border">
-          <h2 className="text-sm font-semibold">Clientes recentes</h2>
+          <h2 className="text-sm font-semibold">Clientes</h2>
         </div>
         <div className="divide-y divide-border">
-          {recentClients.map((client: any) => (
+          {allClients.map((client: any) => (
             <Link
               key={client.id}
               href={`/dashboard/clients/${client.id}`}
@@ -63,7 +61,7 @@ export default async function DashboardPage() {
               </span>
             </Link>
           ))}
-          {recentClients.length === 0 && (
+          {allClients.length === 0 && (
             <div className="px-5 py-8 text-center text-sm text-muted-foreground">
               Nenhum cliente cadastrado.
             </div>
