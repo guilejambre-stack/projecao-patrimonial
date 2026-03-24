@@ -49,6 +49,7 @@ Kinvo (dashboard de investimentos), Warren (visual clean fintech), RightCapital 
 - O planejador clica "Convidar ao portal" no perfil do cliente
 - O sistema envia email com magic link (Supabase Auth)
 - Ao logar, o cliente e automaticamente associado via `portal_user_id` e direcionado ao `/portal`
+- Se o cliente ja possui `portal_user_id`, o botao "Convidar ao Portal" fica desabilitado
 
 ---
 
@@ -112,6 +113,7 @@ Kinvo (dashboard de investimentos), Warren (visual clean fintech), RightCapital 
 | social_security_income | numeric | Renda do INSS |
 | other_income | numeric | Outras rendas |
 | risk_profile | text ('conservative' \| 'moderate' \| 'aggressive') | Perfil de risco |
+| created_at | timestamptz | Data de criacao |
 | updated_at | timestamptz | Data de atualizacao |
 
 ### assets
@@ -257,7 +259,7 @@ src/
 │   │   ├── layout.tsx
 │   │   ├── profile/page.tsx
 │   │   └── projection/page.tsx
-│   └── middleware.ts
+│   └── middleware.ts           (Next.js requer em src/middleware.ts, nao dentro de app/)
 ├── components/
 │   ├── ui/                     (shadcn/ui)
 │   ├── projection-chart.tsx
