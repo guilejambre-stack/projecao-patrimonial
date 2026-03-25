@@ -4,7 +4,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-sm">
-        <div className="bg-card border border-border rounded-xl p-10 shadow-lg text-center">
+        <div className="bg-card border border-border rounded-xl p-10 shadow-sm text-center">
           <h1 className="text-xl font-semibold text-foreground mb-1">
             Pranej Fin
           </h1>

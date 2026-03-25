@@ -44,7 +44,7 @@ export default async function ClientsPage({
             <tr className="border-b border-border">
               <th className="text-left text-xs font-medium text-muted-foreground p-4">Nome</th>
               <th className="text-left text-xs font-medium text-muted-foreground p-4">Telefone</th>
-              <th className="text-left text-xs font-medium text-muted-foreground p-4">Patrimonio</th>
+              <th className="text-left text-xs font-medium text-muted-foreground p-4">Patrimônio</th>
               <th className="text-left text-xs font-medium text-muted-foreground p-4">Portal</th>
             </tr>
           </thead>

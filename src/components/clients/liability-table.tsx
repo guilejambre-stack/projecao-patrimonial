@@ -33,7 +33,7 @@ export function LiabilityTable({ clientId, liabilities }: { clientId: string; li
     <div>
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h3 className="text-sm font-semibold">Dividas</h3>
+          <h3 className="text-sm font-semibold">Dívidas</h3>
           <p className="text-xs text-muted-foreground">Total: {formatBRL(totalLiabilities)}</p>
         </div>
         <Button size="sm" variant="outline" className="gap-1" onClick={() => setAdding(true)}>
@@ -85,7 +85,7 @@ export function LiabilityTable({ clientId, liabilities }: { clientId: string; li
             {liabilities.length === 0 && !adding && (
               <tr>
                 <td colSpan={5} className="p-6 text-center text-sm text-muted-foreground">
-                  Nenhuma divida cadastrada.
+                  Nenhuma dívida cadastrada.
                 </td>
               </tr>
             )}

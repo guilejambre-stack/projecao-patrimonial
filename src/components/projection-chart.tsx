@@ -28,15 +28,15 @@ export function ProjectionChart({ series }: ProjectionChartProps) {
     <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
       <div className="px-5 py-3.5 border-b border-border flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold">Projecao Patrimonial</h3>
+          <h3 className="text-sm font-semibold">Projeção Patrimonial</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Evolucao do patrimonio por cenario — idade {series.ages[0]} → {series.ages[series.ages.length - 1]} anos
+            Evolução do patrimônio por cenário — idade {series.ages[0]} → {series.ages[series.ages.length - 1]} anos
           </p>
         </div>
         <div className="flex gap-4">
-          <LegendItem color="#3B82F6" label="Viver de renda" />
-          <LegendItem color="#10B981" label="Consumo" />
-          <LegendItem color="#DC2626" label="Simulacao" dashed />
+          <LegendItem color="#1E40AF" label="Viver de renda" />
+          <LegendItem color="#047857" label="Consumo" />
+          <LegendItem color="#B91C1C" label="Simulação" dashed />
         </div>
       </div>
       <div className="p-5 h-72">
@@ -44,13 +44,13 @@ export function ProjectionChart({ series }: ProjectionChartProps) {
           <ComposedChart data={data} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
             <XAxis
               dataKey="age"
-              tick={{ fill: "#64748B", fontSize: 11 }}
+              tick={{ fill: "#6B7A90", fontSize: 11 }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => (v % 5 === 0 ? String(v) : "")}
             />
             <YAxis
-              tick={{ fill: "#64748B", fontSize: 11 }}
+              tick={{ fill: "#6B7A90", fontSize: 11 }}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) =>
@@ -64,7 +64,7 @@ export function ProjectionChart({ series }: ProjectionChartProps) {
             <Tooltip
               contentStyle={{
                 backgroundColor: "#FFFFFF",
-                border: "1px solid #E2E8F0",
+                border: "1px solid #E5E9F0",
                 borderRadius: "8px",
                 fontSize: 12,
               }}
@@ -74,7 +74,7 @@ export function ProjectionChart({ series }: ProjectionChartProps) {
                 const labels: Record<string, string> = {
                   incomePreserving: "Viver de renda",
                   capitalConsumption: "Consumo",
-                  simulated: "Simulacao",
+                  simulated: "Simulação",
                 };
                 return [formatBRL(isNaN(num) ? 0 : num), labels[String(name)] ?? String(name)];
               }}
@@ -82,23 +82,23 @@ export function ProjectionChart({ series }: ProjectionChartProps) {
             <Area
               type="monotone"
               dataKey="incomePreserving"
-              stroke="#3B82F6"
-              fill="rgba(59,130,246,0.07)"
+              stroke="#1E40AF"
+              fill="rgba(30,64,175,0.06)"
               strokeWidth={2}
               dot={false}
             />
             <Area
               type="monotone"
               dataKey="capitalConsumption"
-              stroke="#10B981"
-              fill="rgba(16,185,129,0.06)"
+              stroke="#047857"
+              fill="rgba(4,120,87,0.05)"
               strokeWidth={2}
               dot={false}
             />
             <Line
               type="monotone"
               dataKey="simulated"
-              stroke="#DC2626"
+              stroke="#B91C1C"
               strokeWidth={1.5}
               strokeDasharray="4 3"
               dot={false}

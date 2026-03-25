@@ -21,7 +21,7 @@ export function LoginForm() {
     });
 
     if (error) {
-      setError("Nao foi possivel conectar ao Google. Tente novamente.");
+      setError("Não foi possível conectar ao Google. Tente novamente.");
       setLoading(false);
     }
   }

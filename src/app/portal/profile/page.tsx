@@ -40,7 +40,7 @@ export default async function PortalProfilePage() {
 
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-xs text-muted-foreground">Patrimonio liquido</p>
+          <p className="text-xs text-muted-foreground">Patrimônio líquido</p>
           <p className="text-xl font-semibold text-accent">{formatBRL(totalAssets - totalLiabilities)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
@@ -74,7 +74,7 @@ export default async function PortalProfilePage() {
       {(liabilities?.length ?? 0) > 0 && (
         <div className="bg-card border border-border rounded-xl overflow-hidden">
           <div className="px-5 py-3.5 border-b border-border">
-            <h2 className="text-sm font-semibold">Dividas</h2>
+            <h2 className="text-sm font-semibold">Dívidas</h2>
           </div>
           <table className="w-full">
             <tbody>

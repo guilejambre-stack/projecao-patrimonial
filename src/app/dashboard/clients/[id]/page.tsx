@@ -23,14 +23,14 @@ export default async function ClientDetailPage({
     <div>
       <h1 className="text-xl font-semibold mb-1">{data.client.full_name}</h1>
       <p className="text-sm text-muted-foreground mb-6">
-        {data.client.occupation ?? "Sem ocupacao"} · {data.client.email ?? "Sem email"}
+        {data.client.occupation ?? "Sem ocupação"} · {data.client.email ?? "Sem email"}
       </p>
 
       <Tabs defaultValue="personal" className="space-y-4">
         <TabsList>
           <TabsTrigger value="personal">Dados Pessoais</TabsTrigger>
           <TabsTrigger value="financial">Perfil Financeiro</TabsTrigger>
-          <TabsTrigger value="projection">Projecao Patrimonial</TabsTrigger>
+          <TabsTrigger value="projection">Projeção Patrimonial</TabsTrigger>
         </TabsList>
 
         <TabsContent value="personal">

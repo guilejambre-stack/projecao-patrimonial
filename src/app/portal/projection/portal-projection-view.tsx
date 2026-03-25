@@ -44,32 +44,32 @@ export function PortalProjectionView({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Minha Projecao Patrimonial</h1>
+      <h1 className="text-xl font-semibold">Minha Projeção Patrimonial</h1>
 
       <div className="grid grid-cols-3 gap-3">
         <KPICard
           label="Viver de renda"
           value={formatBRLCompact(result.wealthForIncome)}
-          subtitle={`${formatBRL(result.requiredMonthlyIncome)}/mes`}
+          subtitle={`${formatBRL(result.requiredMonthlyIncome)}/mês`}
           accentColor="blue"
         />
         <KPICard
-          label="Patrimonio projetado"
+          label="Patrimônio projetado"
           value={formatBRLCompact(result.projectedWealth)}
           subtitle={`Em ${result.accumulationYears} anos`}
           accentColor="green"
         />
         <KPICard
-          label={result.isGoalAchievable ? "Meta atingivel" : "Revisao necessaria"}
+          label={result.isGoalAchievable ? "Meta atingível" : "Revisão necessária"}
           value={formatBRLCompact(Math.abs(result.gap))}
-          subtitle={result.isGoalAchievable ? "superavit" : "deficit"}
+          subtitle={result.isGoalAchievable ? "superávit" : "déficit"}
           accentColor={result.isGoalAchievable ? "green" : "red"}
         />
       </div>
 
       <div className="grid grid-cols-4 gap-3">
         <MetricCard
-          label="Taxa real liquida a.a."
+          label="Taxa real líquida a.a."
           value={formatPercent(rates.realAnnual * 100)}
         />
         <MetricCard
@@ -77,9 +77,9 @@ export function PortalProjectionView({
           value={`${result.accumulationYears} anos`}
         />
         <MetricCard
-          label="Renda necessaria"
+          label="Renda necessária"
           value={formatBRL(result.requiredMonthlyIncome)}
-          subtitle="por mes"
+          subtitle="por mês"
         />
         <MetricCard
           label="Aporte mensal"

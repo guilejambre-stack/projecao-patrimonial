@@ -17,8 +17,8 @@ import type { Asset } from "@/types";
 
 const categoryLabels: Record<string, string> = {
   investment: "Investimento",
-  property: "Imovel",
-  vehicle: "Veiculo",
+  property: "Imóvel",
+  vehicle: "Veículo",
   other: "Outro",
 };
 
@@ -46,7 +46,7 @@ export function AssetTable({ clientId, assets }: { clientId: string; assets: Ass
     <div>
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h3 className="text-sm font-semibold">Patrimonio</h3>
+          <h3 className="text-sm font-semibold">Patrimônio</h3>
           <p className="text-xs text-muted-foreground">Total: {formatBRL(totalAssets)}</p>
         </div>
         <Button size="sm" variant="outline" className="gap-1" onClick={() => setAdding(true)}>
@@ -89,8 +89,8 @@ export function AssetTable({ clientId, assets }: { clientId: string; assets: Ass
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="investment">Investimento</SelectItem>
-                        <SelectItem value="property">Imovel</SelectItem>
-                        <SelectItem value="vehicle">Veiculo</SelectItem>
+                        <SelectItem value="property">Imóvel</SelectItem>
+                        <SelectItem value="vehicle">Veículo</SelectItem>
                         <SelectItem value="other">Outro</SelectItem>
                       </SelectContent>
                     </Select>

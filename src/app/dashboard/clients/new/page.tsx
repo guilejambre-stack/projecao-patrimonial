@@ -49,7 +49,7 @@ export default function NewClientPage() {
             <Input id="birth_date" name="birth_date" type="date" />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="occupation">Ocupacao</Label>
+            <Label htmlFor="occupation">Ocupação</Label>
             <Input id="occupation" name="occupation" />
           </div>
           <div className="space-y-1.5">
@@ -62,14 +62,14 @@ export default function NewClientPage() {
                 <SelectItem value="single">Solteiro(a)</SelectItem>
                 <SelectItem value="married">Casado(a)</SelectItem>
                 <SelectItem value="divorced">Divorciado(a)</SelectItem>
-                <SelectItem value="widowed">Viuvo(a)</SelectItem>
+                <SelectItem value="widowed">Viúvo(a)</SelectItem>
                 <SelectItem value="other">Outro</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="notes">Observacoes</Label>
+          <Label htmlFor="notes">Observações</Label>
           <Textarea id="notes" name="notes" rows={3} />
         </div>
         <div className="flex gap-3 pt-2">

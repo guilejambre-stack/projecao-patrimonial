@@ -31,7 +31,7 @@ export function PersonalTab({ client }: { client: Client }) {
   }
 
   async function handleDelete() {
-    if (!confirm(`Tem certeza que deseja excluir o cliente "${client.full_name}"? Esta acao nao pode ser desfeita.`)) return;
+    if (!confirm(`Tem certeza que deseja excluir o cliente "${client.full_name}"? Esta ação não pode ser desfeita.`)) return;
     await deleteClientAction(client.id);
     router.push("/dashboard/clients");
   }
@@ -61,7 +61,7 @@ export function PersonalTab({ client }: { client: Client }) {
             <Input id="birth_date" name="birth_date" type="date" defaultValue={client.birth_date ?? ""} />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="occupation">Ocupacao</Label>
+            <Label htmlFor="occupation">Ocupação</Label>
             <Input id="occupation" name="occupation" defaultValue={client.occupation ?? ""} />
           </div>
           <div className="space-y-1.5">
@@ -74,14 +74,14 @@ export function PersonalTab({ client }: { client: Client }) {
                 <SelectItem value="single">Solteiro(a)</SelectItem>
                 <SelectItem value="married">Casado(a)</SelectItem>
                 <SelectItem value="divorced">Divorciado(a)</SelectItem>
-                <SelectItem value="widowed">Viuvo(a)</SelectItem>
+                <SelectItem value="widowed">Viúvo(a)</SelectItem>
                 <SelectItem value="other">Outro</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="notes">Observacoes</Label>
+          <Label htmlFor="notes">Observações</Label>
           <Textarea id="notes" name="notes" rows={3} defaultValue={client.notes ?? ""} />
         </div>
         <div className="flex items-center gap-3 pt-2">

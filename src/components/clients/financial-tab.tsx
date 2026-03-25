@@ -59,13 +59,13 @@ export function FinancialTab({
     <div className="space-y-8">
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-muted-foreground">Patrimonio liquido</p>
+          <p className="text-xs text-muted-foreground">Patrimônio líquido</p>
           <p className={`text-lg font-semibold ${netWorth >= 0 ? "text-accent" : "text-destructive"}`}>
             {formatBRL(netWorth)}
           </p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
-          <p className="text-xs text-muted-foreground">Reserva de emergencia</p>
+          <p className="text-xs text-muted-foreground">Reserva de emergência</p>
           <p className="text-lg font-semibold">{formatBRL(fp?.emergency_fund ?? 0)}</p>
         </div>
         <div className="bg-card border border-border rounded-lg p-4">
@@ -76,7 +76,7 @@ export function FinancialTab({
 
       <form action={handleSaveProfile} className="space-y-6">
         <div>
-          <h3 className="text-sm font-semibold mb-3">Renda & Despesas</h3>
+          <h3 className="text-sm font-semibold mb-3">Renda e Despesas</h3>
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-1.5">
               <Label>Renda mensal (R$)</Label>
@@ -105,7 +105,7 @@ export function FinancialTab({
               <Input name="life_expectancy" type="number" defaultValue={fp?.life_expectancy ?? 100} />
             </div>
             <div className="space-y-1.5">
-              <Label>Reserva emergencia (R$)</Label>
+              <Label>Reserva emergência (R$)</Label>
               <Input name="emergency_fund" type="number" defaultValue={fp?.emergency_fund ?? 0} />
             </div>
             <div className="space-y-1.5">

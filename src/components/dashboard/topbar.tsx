@@ -30,7 +30,7 @@ export function Topbar({ profile }: { profile: Profile }) {
     .toUpperCase();
 
   return (
-    <header className="h-14 bg-card border-b border-border flex items-center justify-between px-6">
+    <header className="h-14 bg-card/80 backdrop-blur-sm border-b border-border flex items-center justify-between px-6 sticky top-0 z-30">
       <div className="text-sm text-muted-foreground">
         Planejamento Financeiro
       </div>
@@ -39,7 +39,7 @@ export function Topbar({ profile }: { profile: Profile }) {
         <DropdownMenuTrigger className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-secondary transition-colors outline-none">
           <Avatar className="h-7 w-7">
             <AvatarImage src={profile.avatar_url ?? undefined} />
-            <AvatarFallback className="text-xs bg-secondary">
+            <AvatarFallback className="text-xs bg-primary/10 text-primary font-medium">
               {initials}
             </AvatarFallback>
           </Avatar>

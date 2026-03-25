@@ -66,7 +66,7 @@ export function ProjectionTab({
   return (
     <div className="space-y-4">
       <div className="bg-card border border-border rounded-xl p-4">
-        <h3 className="text-sm font-semibold mb-3">Parametros de Taxas</h3>
+        <h3 className="text-sm font-semibold mb-3">Parâmetros de Taxas</h3>
         <div className="grid grid-cols-5 gap-4 items-end">
           <div className="space-y-1.5">
             <Label className="text-xs">CDI anual (%)</Label>
@@ -87,7 +87,7 @@ export function ProjectionTab({
             />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-xs">Aliquota IR (%)</Label>
+            <Label className="text-xs">Alíquota IR (%)</Label>
             <Input
               type="number"
               step="0.5"
@@ -96,7 +96,7 @@ export function ProjectionTab({
             />
           </div>
           <div className="space-y-1.5">
-            <Label className="text-xs">Inflacao anual (%)</Label>
+            <Label className="text-xs">Inflação anual (%)</Label>
             <Input
               type="number"
               step="0.1"
@@ -107,7 +107,7 @@ export function ProjectionTab({
           <Button size="sm" onClick={handleSaveScenario}>Salvar taxas</Button>
         </div>
         <p className="text-xs text-accent mt-2">
-          Taxa real liquida a.a.: {formatPercent(rates.realAnnual * 100)}
+          Taxa real líquida a.a.: {formatPercent(rates.realAnnual * 100)}
         </p>
       </div>
 
@@ -115,7 +115,7 @@ export function ProjectionTab({
         <KPICard
           label="Viver de renda (preservar capital)"
           value={formatBRLCompact(result.wealthForIncome)}
-          subtitle={`Renda: ${formatBRL(result.requiredMonthlyIncome)}/mes em juros`}
+          subtitle={`Renda: ${formatBRL(result.requiredMonthlyIncome)}/mês em juros`}
           accentColor="blue"
         />
         <KPICard
@@ -125,33 +125,33 @@ export function ProjectionTab({
           accentColor="green"
         />
         <KPICard
-          label="Patrimonio projetado (simulacao)"
+          label="Patrimônio projetado (simulação)"
           value={formatBRLCompact(result.projectedWealth)}
-          subtitle={`Aportando ${formatBRL(input.monthlyContribution)}/mes por ${result.accumulationYears} anos`}
+          subtitle={`Aportando ${formatBRL(input.monthlyContribution)}/mês por ${result.accumulationYears} anos`}
           accentColor="red"
         />
       </div>
 
       <div className="grid grid-cols-4 gap-3">
         <MetricCard
-          label="Taxa real liquida a.a."
+          label="Taxa real líquida a.a."
           value={formatPercent(rates.realAnnual * 100)}
           subtitle={`Mensal: ${formatPercent(rates.realMonthly * 100, 3)}`}
         />
         <MetricCard
-          label="Horizonte de acumulacao"
+          label="Horizonte de acumulação"
           value={`${result.accumulationYears} anos`}
           subtitle={`${input.currentAge} → ${input.retirementAge} anos`}
         />
         <MetricCard
-          label="Renda necessaria do portfolio"
+          label="Renda necessária do portfólio"
           value={formatBRL(result.requiredMonthlyIncome)}
-          subtitle="por mes"
+          subtitle="por mês"
         />
         <MetricCard
-          label="Diferenca (simulacao vs meta)"
+          label="Diferença (simulação vs meta)"
           value={formatBRLCompact(Math.abs(result.gap))}
-          subtitle={result.isGoalAchievable ? "superavit" : "deficit"}
+          subtitle={result.isGoalAchievable ? "superávit" : "déficit"}
           valueClassName={result.isGoalAchievable ? "text-accent" : "text-destructive"}
         />
       </div>
