@@ -27,7 +27,7 @@ export function PortalTopbar({ profile }: { profile: Profile }) {
     <header className="bg-card/80 backdrop-blur-sm border-b border-border sticky top-0 z-30">
       <div className="max-w-5xl mx-auto flex items-center justify-between h-14 px-6">
         <div className="flex items-center gap-6">
-          <span className="text-sm font-semibold">Pranej Fin</span>
+          <span className="text-sm font-semibold">Use Mas Não Abuse</span>
           <nav className="flex gap-1">
             {tabs.map((tab) => (
               <Link

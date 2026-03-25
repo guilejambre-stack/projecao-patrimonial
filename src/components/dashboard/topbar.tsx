@@ -32,7 +32,7 @@ export function Topbar({ profile }: { profile: Profile }) {
   return (
     <header className="h-14 bg-card/80 backdrop-blur-sm border-b border-border flex items-center justify-between px-6 sticky top-0 z-30">
       <div className="text-sm text-muted-foreground">
-        Planejamento Financeiro
+        Use Mas Não Abuse — Planejamento Financeiro
       </div>
 
       <DropdownMenu>

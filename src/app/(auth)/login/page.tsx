@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { LoginForm } from "./login-form";
 
 export default function LoginPage() {
@@ -5,9 +6,9 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="w-full max-w-sm">
         <div className="bg-card border border-border rounded-xl p-10 shadow-sm text-center">
-          <h1 className="text-xl font-semibold text-foreground mb-1">
-            Pranej Fin
-          </h1>
+          <div className="flex justify-center mb-4">
+            <Image src="/logo.png" alt="Use Mas Não Abuse" width={120} height={48} className="h-12 w-auto" />
+          </div>
           <p className="text-sm text-muted-foreground mb-8">
             Planejamento financeiro pessoal
           </p>

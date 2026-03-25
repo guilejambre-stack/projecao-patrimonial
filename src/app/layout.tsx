@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Pranej Fin — Planejamento Financeiro",
+  title: "Use Mas Não Abuse — Planejamento Financeiro",
   description: "Sistema de planejamento financeiro pessoal",
 };
 
