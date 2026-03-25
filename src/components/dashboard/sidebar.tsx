@@ -19,7 +19,7 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 h-screen w-60 bg-[#22405f] flex flex-col z-40">
       <div className="h-14 flex items-center px-5 border-b border-white/15">
         <Link href="/dashboard" className="flex items-center gap-2.5">
-          <Image src="/logo.png" alt="Use Mas Não Abuse" width={28} height={28} className="rounded" />
+          <Image src="/logo.jpg" alt="Use Mas Não Abuse" width={28} height={28} className="rounded" />
           <span className="text-sm font-semibold text-white">Use Mas Não Abuse</span>
         </Link>
       </div>
