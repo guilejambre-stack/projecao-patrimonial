@@ -15,24 +15,26 @@ export default async function PortalProfilePage() {
 
   if (!client) redirect("/login");
 
-  const { data: fp } = await supabase
-    .from("financial_profile")
-    .select("*")
-    .eq("client_id", client.id)
-    .single();
+  const [fpRes, assetsRes, liabilitiesRes, insuranceRes] = await Promise.all([
+    supabase.from("financial_profile").select("*").eq("client_id", client.id).single(),
+    supabase.from("assets").select("*").eq("client_id", client.id),
+    supabase.from("liabilities").select("*").eq("client_id", client.id),
+    supabase.from("insurance").select("*").eq("client_id", client.id),
+  ]);
 
-  const { data: assets } = await supabase
-    .from("assets")
-    .select("*")
-    .eq("client_id", client.id);
+  const fp = fpRes.data;
+  const assets = assetsRes.data ?? [];
+  const liabilities = liabilitiesRes.data ?? [];
+  const insurance = insuranceRes.data ?? [];
 
-  const { data: liabilities } = await supabase
-    .from("liabilities")
-    .select("*")
-    .eq("client_id", client.id);
+  const totalAssets = assets.reduce((s: number, a: any) => s + a.current_value, 0);
+  const totalLiabilities = liabilities.reduce((s: number, l: any) => s + l.remaining_amount, 0);
+  const totalPremium = insurance.reduce((s: number, i: any) => s + i.monthly_premium, 0);
 
-  const totalAssets = (assets ?? []).reduce((s: number, a: any) => s + a.current_value, 0);
-  const totalLiabilities = (liabilities ?? []).reduce((s: number, l: any) => s + l.remaining_amount, 0);
+  const typeLabels: Record<string, string> = {
+    life: "Vida", health: "Saúde", property: "Imóvel",
+    vehicle: "Veículo", liability: "Resp. Civil", other: "Outro",
+  };
 
   return (
     <div className="space-y-6">
@@ -53,14 +55,29 @@ export default async function PortalProfilePage() {
         </div>
       </div>
 
-      {(assets?.length ?? 0) > 0 && (
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-card border border-border rounded-xl p-4">
+          <p className="text-xs text-muted-foreground">Despesas mensais</p>
+          <p className="text-xl font-semibold">{formatBRL(fp?.monthly_expenses ?? 0)}</p>
+        </div>
+        <div className="bg-card border border-border rounded-xl p-4">
+          <p className="text-xs text-muted-foreground">Reserva de emergência</p>
+          <p className="text-xl font-semibold">{formatBRL(fp?.emergency_fund ?? 0)}</p>
+        </div>
+        <div className="bg-card border border-border rounded-xl p-4">
+          <p className="text-xs text-muted-foreground">Prêmio de seguros</p>
+          <p className="text-xl font-semibold">{formatBRL(totalPremium)}/mês</p>
+        </div>
+      </div>
+
+      {assets.length > 0 && (
         <div className="bg-card border border-border rounded-xl overflow-hidden">
           <div className="px-5 py-3.5 border-b border-border">
             <h2 className="text-sm font-semibold">Ativos</h2>
           </div>
           <table className="w-full">
             <tbody>
-              {assets?.map((a: any) => (
+              {assets.map((a: any) => (
                 <tr key={a.id} className="border-b border-border last:border-0">
                   <td className="p-4 text-sm">{a.name}</td>
                   <td className="p-4 text-sm text-right font-medium">{formatBRL(a.current_value)}</td>
@@ -71,17 +88,45 @@ export default async function PortalProfilePage() {
         </div>
       )}
 
-      {(liabilities?.length ?? 0) > 0 && (
+      {liabilities.length > 0 && (
         <div className="bg-card border border-border rounded-xl overflow-hidden">
           <div className="px-5 py-3.5 border-b border-border">
             <h2 className="text-sm font-semibold">Dívidas</h2>
           </div>
           <table className="w-full">
             <tbody>
-              {liabilities?.map((l: any) => (
+              {liabilities.map((l: any) => (
                 <tr key={l.id} className="border-b border-border last:border-0">
                   <td className="p-4 text-sm">{l.name}</td>
                   <td className="p-4 text-sm text-right font-medium">{formatBRL(l.remaining_amount)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {insurance.length > 0 && (
+        <div className="bg-card border border-border rounded-xl overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-border">
+            <h2 className="text-sm font-semibold">Seguros</h2>
+          </div>
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left text-xs font-medium text-muted-foreground p-4">Tipo</th>
+                <th className="text-left text-xs font-medium text-muted-foreground p-4">Seguradora</th>
+                <th className="text-right text-xs font-medium text-muted-foreground p-4">Cobertura</th>
+                <th className="text-right text-xs font-medium text-muted-foreground p-4">Prêmio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {insurance.map((i: any) => (
+                <tr key={i.id} className="border-b border-border last:border-0">
+                  <td className="p-4 text-sm">{typeLabels[i.type] ?? i.type}</td>
+                  <td className="p-4 text-sm">{i.provider}</td>
+                  <td className="p-4 text-sm text-right">{formatBRL(i.coverage_amount)}</td>
+                  <td className="p-4 text-sm text-right font-medium">{formatBRL(i.monthly_premium)}</td>
                 </tr>
               ))}
             </tbody>

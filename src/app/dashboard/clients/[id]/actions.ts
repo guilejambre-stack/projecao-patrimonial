@@ -6,23 +6,31 @@ import { createClient } from "@/lib/supabase/server";
 export async function getClientById(id: string) {
   const supabase = await createClient();
 
-  const [clientRes, fpRes, assetsRes, liabilitiesRes, scenarioRes] =
+  const [clientRes, fpRes, assetsRes, liabilitiesRes, scenariosRes, goalsRes, insuranceRes] =
     await Promise.all([
       supabase.from("clients").select("*").eq("id", id).single(),
       supabase.from("financial_profile").select("*").eq("client_id", id).single(),
       supabase.from("assets").select("*").eq("client_id", id).order("created_at"),
       supabase.from("liabilities").select("*").eq("client_id", id).order("created_at"),
-      supabase.from("projection_scenarios").select("*").eq("client_id", id).eq("is_default", true).single(),
+      supabase.from("projection_scenarios").select("*").eq("client_id", id).order("is_default", { ascending: false }),
+      supabase.from("goals").select("*").eq("client_id", id).order("priority"),
+      supabase.from("insurance").select("*").eq("client_id", id).order("created_at"),
     ]);
 
   if (clientRes.error) throw clientRes.error;
+
+  const scenarios = scenariosRes.data ?? [];
+  const defaultScenario = scenarios.find((s: any) => s.is_default) ?? scenarios[0] ?? null;
 
   return {
     client: clientRes.data,
     financialProfile: fpRes.data,
     assets: assetsRes.data ?? [],
     liabilities: liabilitiesRes.data ?? [],
-    scenario: scenarioRes.data,
+    scenario: defaultScenario,
+    scenarios,
+    goals: goalsRes.data ?? [],
+    insurance: insuranceRes.data ?? [],
   };
 }
 
@@ -130,6 +138,51 @@ export async function updateScenarioAction(
     .from("projection_scenarios")
     .update(data)
     .eq("id", scenarioId);
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+// Scenario management
+export async function createScenarioAction(clientId: string, data: { name: string; cdi_rate: number; cdi_percentage: number; tax_rate: number; inflation_rate: number }) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("projection_scenarios").insert({ client_id: clientId, ...data, is_default: false });
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+export async function deleteScenarioAction(clientId: string, scenarioId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("projection_scenarios").delete().eq("id", scenarioId).eq("client_id", clientId);
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+// Goals management
+export async function upsertGoalAction(clientId: string, data: { name: string; target_amount: number; target_date?: string; priority?: string; category?: string; notes?: string }) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("goals").insert({ client_id: clientId, ...data });
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+export async function deleteGoalAction(clientId: string, goalId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("goals").delete().eq("id", goalId).eq("client_id", clientId);
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+// Insurance management
+export async function upsertInsuranceAction(clientId: string, data: { type: string; provider: string; policy_number?: string; coverage_amount: number; monthly_premium: number; expiry_date?: string; beneficiary?: string; notes?: string }) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("insurance").insert({ client_id: clientId, ...data });
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+export async function deleteInsuranceAction(clientId: string, insuranceId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("insurance").delete().eq("id", insuranceId).eq("client_id", clientId);
   if (error) throw error;
   revalidatePath(`/dashboard/clients/${clientId}`);
 }

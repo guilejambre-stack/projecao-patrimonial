@@ -15,9 +15,10 @@ export default async function PortalProjectionPage() {
 
   if (!client) redirect("/login");
 
-  const [fpRes, scenarioRes] = await Promise.all([
+  const [fpRes, scenarioRes, goalsRes] = await Promise.all([
     supabase.from("financial_profile").select("*").eq("client_id", client.id).single(),
     supabase.from("projection_scenarios").select("*").eq("client_id", client.id).eq("is_default", true).single(),
+    supabase.from("goals").select("*").eq("client_id", client.id).order("priority"),
   ]);
 
   return (
@@ -25,6 +26,7 @@ export default async function PortalProjectionPage() {
       client={client}
       financialProfile={fpRes.data}
       scenario={scenarioRes.data}
+      goals={goalsRes.data ?? []}
     />
   );
 }

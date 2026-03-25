@@ -12,9 +12,10 @@ import {
 } from "@/components/ui/select";
 import { AssetTable } from "./asset-table";
 import { LiabilityTable } from "./liability-table";
+import { InsuranceTable } from "./insurance-table";
 import { updateFinancialProfileAction } from "@/app/dashboard/clients/[id]/actions";
 import { formatBRL } from "@/lib/utils";
-import type { Client, FinancialProfile, Asset, Liability } from "@/types";
+import type { Client, FinancialProfile, Asset, Liability, Insurance } from "@/types";
 
 const riskLabels: Record<string, string> = {
   conservative: "Conservador",
@@ -27,11 +28,13 @@ export function FinancialTab({
   financialProfile,
   assets,
   liabilities,
+  insurance,
 }: {
   client: Client;
   financialProfile: FinancialProfile | null;
   assets: Asset[];
   liabilities: Liability[];
+  insurance: Insurance[];
 }) {
   const fp = financialProfile;
   const totalAssets = assets.reduce((sum, a) => sum + a.current_value, 0);
@@ -142,6 +145,7 @@ export function FinancialTab({
 
       <AssetTable clientId={client.id} assets={assets} />
       <LiabilityTable clientId={client.id} liabilities={liabilities} />
+      <InsuranceTable clientId={client.id} insurance={insurance} />
     </div>
   );
 }

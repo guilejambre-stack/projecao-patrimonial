@@ -133,3 +133,31 @@ export interface ProjectionSeries {
   capitalConsumption: number[];
   simulated: number[];
 }
+
+export interface Goal {
+  id: string;
+  client_id: string;
+  name: string;
+  target_amount: number;
+  target_date: string | null;
+  priority: "low" | "medium" | "high";
+  category: "retirement" | "education" | "property" | "travel" | "emergency" | "other";
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Insurance {
+  id: string;
+  client_id: string;
+  type: "life" | "health" | "property" | "vehicle" | "liability" | "other";
+  provider: string;
+  policy_number: string | null;
+  coverage_amount: number;
+  monthly_premium: number;
+  expiry_date: string | null;
+  beneficiary: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}

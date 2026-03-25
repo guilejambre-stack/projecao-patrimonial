@@ -6,16 +6,35 @@ import { MetricCard } from "@/components/metric-card";
 import { ProjectionChart } from "@/components/projection-chart";
 import { computeRates, computeProjection, generateSeries } from "@/lib/projection-engine";
 import { formatBRL, formatBRLCompact, formatPercent } from "@/lib/utils";
-import type { Client, FinancialProfile, ProjectionScenario, ProjectionInput } from "@/types";
+import { Badge } from "@/components/ui/badge";
+import { Target } from "lucide-react";
+import type { Client, FinancialProfile, ProjectionScenario, ProjectionInput, Goal } from "@/types";
+
+const categoryLabels: Record<string, string> = {
+  retirement: "Aposentadoria",
+  education: "Educação",
+  property: "Imóvel",
+  travel: "Viagem",
+  emergency: "Emergência",
+  other: "Outro",
+};
+
+const priorityConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" }> = {
+  low: { label: "Baixa", variant: "secondary" },
+  medium: { label: "Média", variant: "default" },
+  high: { label: "Alta", variant: "destructive" },
+};
 
 export function PortalProjectionView({
   client,
   financialProfile,
   scenario,
+  goals,
 }: {
   client: Client;
   financialProfile: FinancialProfile | null;
   scenario: ProjectionScenario | null;
+  goals: Goal[];
 }) {
   const fp = financialProfile;
   const sc = scenario;
@@ -88,6 +107,34 @@ export function PortalProjectionView({
       </div>
 
       <ProjectionChart series={series} />
+
+      {goals.length > 0 && (
+        <div className="bg-card border border-border rounded-xl overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-border flex items-center gap-2">
+            <Target className="h-4 w-4 text-primary" />
+            <h2 className="text-sm font-semibold">Minhas Metas</h2>
+          </div>
+          <div className="divide-y divide-border">
+            {goals.map((goal) => (
+              <div key={goal.id} className="px-5 py-3 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium">{goal.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {categoryLabels[goal.category]}
+                    {goal.target_date && ` · até ${new Date(goal.target_date).toLocaleDateString("pt-BR")}`}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-semibold">{formatBRL(goal.target_amount)}</span>
+                  <Badge variant={priorityConfig[goal.priority].variant} className="text-xs">
+                    {priorityConfig[goal.priority].label}
+                  </Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

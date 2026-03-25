@@ -4,6 +4,7 @@ import { getClientById } from "./actions";
 import { PersonalTab } from "@/components/clients/personal-tab";
 import { FinancialTab } from "@/components/clients/financial-tab";
 import { ProjectionTab } from "@/components/clients/projection-tab";
+import { GoalsTable } from "@/components/clients/goals-table";
 
 export default async function ClientDetailPage({
   params,
@@ -31,6 +32,7 @@ export default async function ClientDetailPage({
           <TabsTrigger value="personal">Dados Pessoais</TabsTrigger>
           <TabsTrigger value="financial">Perfil Financeiro</TabsTrigger>
           <TabsTrigger value="projection">Projeção Patrimonial</TabsTrigger>
+          <TabsTrigger value="goals">Metas</TabsTrigger>
         </TabsList>
 
         <TabsContent value="personal">
@@ -43,6 +45,7 @@ export default async function ClientDetailPage({
             financialProfile={data.financialProfile}
             assets={data.assets}
             liabilities={data.liabilities}
+            insurance={data.insurance}
           />
         </TabsContent>
 
@@ -51,7 +54,14 @@ export default async function ClientDetailPage({
             client={data.client}
             financialProfile={data.financialProfile}
             scenario={data.scenario}
+            scenarios={data.scenarios}
+            assets={data.assets}
+            liabilities={data.liabilities}
           />
+        </TabsContent>
+
+        <TabsContent value="goals">
+          <GoalsTable clientId={data.client.id} goals={data.goals} />
         </TabsContent>
       </Tabs>
     </div>

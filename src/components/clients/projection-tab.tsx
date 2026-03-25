@@ -7,19 +7,28 @@ import { Button } from "@/components/ui/button";
 import { KPICard } from "@/components/kpi-card";
 import { MetricCard } from "@/components/metric-card";
 import { ProjectionChart } from "@/components/projection-chart";
+import { ScenarioComparison } from "./scenario-comparison";
+import { ExportButtons } from "./export-buttons";
+import { PrintReport } from "./print-report";
 import { computeRates, computeProjection, generateSeries } from "@/lib/projection-engine";
 import { formatBRL, formatBRLCompact, formatPercent } from "@/lib/utils";
 import { updateScenarioAction } from "@/app/dashboard/clients/[id]/actions";
-import type { Client, FinancialProfile, ProjectionScenario, ProjectionInput } from "@/types";
+import type { Client, FinancialProfile, ProjectionScenario, ProjectionInput, Asset, Liability } from "@/types";
 
 export function ProjectionTab({
   client,
   financialProfile,
   scenario,
+  scenarios,
+  assets,
+  liabilities,
 }: {
   client: Client;
   financialProfile: FinancialProfile | null;
   scenario: ProjectionScenario | null;
+  scenarios: ProjectionScenario[];
+  assets: Asset[];
+  liabilities: Liability[];
 }) {
   const fp = financialProfile;
   const sc = scenario;
@@ -65,6 +74,26 @@ export function ProjectionTab({
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Projeção Patrimonial</h2>
+        <div className="flex gap-2">
+          <ExportButtons
+            client={client}
+            financialProfile={fp}
+            assets={assets}
+            liabilities={liabilities}
+            scenario={sc}
+          />
+          <PrintReport
+            client={client}
+            financialProfile={fp}
+            assets={assets}
+            liabilities={liabilities}
+            scenario={sc}
+          />
+        </div>
+      </div>
+
       <div className="bg-card border border-border rounded-xl p-4">
         <h3 className="text-sm font-semibold mb-3">Parâmetros de Taxas</h3>
         <div className="grid grid-cols-5 gap-4 items-end">
@@ -157,6 +186,15 @@ export function ProjectionTab({
       </div>
 
       <ProjectionChart series={series} />
+
+      {scenarios.length > 0 && (
+        <ScenarioComparison
+          clientId={client.id}
+          scenarios={scenarios}
+          financialProfile={fp}
+          currentAge={currentAge}
+        />
+      )}
     </div>
   );
 }
