@@ -21,6 +21,10 @@ export interface Profile {
   created_at: string;
 }
 
+export type PipelineStatus = "prospect" | "consultation" | "proposal" | "active" | "inactive";
+
+export type InteractionType = "meeting" | "call" | "email" | "note";
+
 export interface Client {
   id: string;
   planner_id: string;
@@ -32,6 +36,7 @@ export interface Client {
   occupation: string | null;
   marital_status: MaritalStatus | null;
   notes: string | null;
+  pipeline_status: PipelineStatus;
   portal_user_id: string | null;
   created_at: string;
   updated_at: string;
@@ -143,6 +148,21 @@ export interface Goal {
   priority: "low" | "medium" | "high";
   category: "retirement" | "education" | "property" | "travel" | "emergency" | "other";
   notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Interaction {
+  id: string;
+  client_id: string;
+  type: InteractionType;
+  date: string;
+  duration_minutes: number | null;
+  summary: string;
+  next_steps: string | null;
+  outcome: string | null;
+  follow_up_date: string | null;
+  follow_up_description: string | null;
   created_at: string;
   updated_at: string;
 }

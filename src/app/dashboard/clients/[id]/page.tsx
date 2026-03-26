@@ -1,10 +1,28 @@
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { getClientById } from "./actions";
 import { PersonalTab } from "@/components/clients/personal-tab";
 import { FinancialTab } from "@/components/clients/financial-tab";
 import { ProjectionTab } from "@/components/clients/projection-tab";
 import { GoalsTable } from "@/components/clients/goals-table";
+import { InteractionsTab } from "@/components/clients/interactions-tab";
+
+const statusLabels: Record<string, string> = {
+  prospect: "Prospecto",
+  consultation: "Consulta",
+  proposal: "Proposta",
+  active: "Ativo",
+  inactive: "Inativo",
+};
+
+const statusVariants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+  prospect: "secondary",
+  consultation: "outline",
+  proposal: "default",
+  active: "default",
+  inactive: "destructive",
+};
 
 export default async function ClientDetailPage({
   params,
@@ -22,7 +40,12 @@ export default async function ClientDetailPage({
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-1">{data.client.full_name}</h1>
+      <div className="flex items-center gap-3 mb-1">
+        <h1 className="text-xl font-semibold">{data.client.full_name}</h1>
+        <Badge variant={statusVariants[data.client.pipeline_status] ?? "secondary"} className="text-xs">
+          {statusLabels[data.client.pipeline_status] ?? "Prospecto"}
+        </Badge>
+      </div>
       <p className="text-sm text-muted-foreground mb-6">
         {data.client.occupation ?? "Sem ocupação"} · {data.client.email ?? "Sem email"}
       </p>
@@ -33,6 +56,7 @@ export default async function ClientDetailPage({
           <TabsTrigger value="financial">Perfil Financeiro</TabsTrigger>
           <TabsTrigger value="projection">Projeção Patrimonial</TabsTrigger>
           <TabsTrigger value="goals">Metas</TabsTrigger>
+          <TabsTrigger value="interactions">Interações</TabsTrigger>
         </TabsList>
 
         <TabsContent value="personal">
@@ -62,6 +86,10 @@ export default async function ClientDetailPage({
 
         <TabsContent value="goals">
           <GoalsTable clientId={data.client.id} goals={data.goals} />
+        </TabsContent>
+
+        <TabsContent value="interactions">
+          <InteractionsTab clientId={data.client.id} interactions={data.interactions} />
         </TabsContent>
       </Tabs>
     </div>

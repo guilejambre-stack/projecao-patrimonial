@@ -79,6 +79,21 @@ export function PersonalTab({ client }: { client: Client }) {
               </SelectContent>
             </Select>
           </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="pipeline_status">Status do Cliente</Label>
+            <Select name="pipeline_status" defaultValue={client.pipeline_status ?? "prospect"}>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="prospect">Prospecto</SelectItem>
+                <SelectItem value="consultation">Consulta</SelectItem>
+                <SelectItem value="proposal">Proposta</SelectItem>
+                <SelectItem value="active">Ativo</SelectItem>
+                <SelectItem value="inactive">Inativo</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="notes">Observações</Label>

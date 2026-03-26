@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 export async function getClientById(id: string) {
   const supabase = await createClient();
 
-  const [clientRes, fpRes, assetsRes, liabilitiesRes, scenariosRes, goalsRes, insuranceRes] =
+  const [clientRes, fpRes, assetsRes, liabilitiesRes, scenariosRes, goalsRes, insuranceRes, interactionsRes] =
     await Promise.all([
       supabase.from("clients").select("*").eq("id", id).single(),
       supabase.from("financial_profile").select("*").eq("client_id", id).single(),
@@ -15,6 +15,7 @@ export async function getClientById(id: string) {
       supabase.from("projection_scenarios").select("*").eq("client_id", id).order("is_default", { ascending: false }),
       supabase.from("goals").select("*").eq("client_id", id).order("priority"),
       supabase.from("insurance").select("*").eq("client_id", id).order("created_at"),
+      supabase.from("interactions").select("*").eq("client_id", id).order("date", { ascending: false }),
     ]);
 
   if (clientRes.error) throw clientRes.error;
@@ -31,6 +32,7 @@ export async function getClientById(id: string) {
     scenarios,
     goals: goalsRes.data ?? [],
     insurance: insuranceRes.data ?? [],
+    interactions: interactionsRes.data ?? [],
   };
 }
 
@@ -48,6 +50,7 @@ export async function updateClientAction(clientId: string, formData: FormData) {
       occupation: formData.get("occupation") as string,
       marital_status: formData.get("marital_status") as string || null,
       notes: formData.get("notes") as string,
+      pipeline_status: formData.get("pipeline_status") as string || "prospect",
     })
     .eq("id", clientId);
 
@@ -183,6 +186,41 @@ export async function upsertInsuranceAction(clientId: string, data: { type: stri
 export async function deleteInsuranceAction(clientId: string, insuranceId: string) {
   const supabase = await createClient();
   const { error } = await supabase.from("insurance").delete().eq("id", insuranceId).eq("client_id", clientId);
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+// Interactions management
+export async function upsertInteractionAction(
+  clientId: string,
+  data: {
+    type: string;
+    date: string;
+    duration_minutes?: number;
+    summary: string;
+    next_steps?: string;
+    outcome?: string;
+    follow_up_date?: string;
+    follow_up_description?: string;
+  }
+) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("interactions").insert({
+    client_id: clientId,
+    ...data,
+    duration_minutes: data.duration_minutes || null,
+    next_steps: data.next_steps || null,
+    outcome: data.outcome || null,
+    follow_up_date: data.follow_up_date || null,
+    follow_up_description: data.follow_up_description || null,
+  });
+  if (error) throw error;
+  revalidatePath(`/dashboard/clients/${clientId}`);
+}
+
+export async function deleteInteractionAction(clientId: string, interactionId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("interactions").delete().eq("id", interactionId).eq("client_id", clientId);
   if (error) throw error;
   revalidatePath(`/dashboard/clients/${clientId}`);
 }
