@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LayoutDashboard, Users, Settings } from "lucide-react";
@@ -18,8 +17,7 @@ export function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-60 bg-[#22405f] flex flex-col z-40">
       <div className="h-14 flex items-center px-5 border-b border-white/15">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
-          <Image src="/logo.jpg" alt="Use Mas Não Abuse" width={28} height={28} className="rounded" />
+        <Link href="/dashboard" className="flex items-center">
           <span className="text-sm font-semibold text-white">Use Mas Não Abuse</span>
         </Link>
       </div>
