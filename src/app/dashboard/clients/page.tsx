@@ -6,13 +6,38 @@ import { Badge } from "@/components/ui/badge";
 import { getClients } from "./actions";
 import { formatBRLCompact } from "@/lib/utils";
 
+const pipelineFilters = [
+  { value: "all", label: "Todos" },
+  { value: "prospect", label: "Prospecto" },
+  { value: "consultation", label: "Consulta" },
+  { value: "proposal", label: "Proposta" },
+  { value: "active", label: "Ativo" },
+  { value: "inactive", label: "Inativo" },
+];
+
+const statusVariants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+  prospect: "secondary",
+  consultation: "outline",
+  proposal: "default",
+  active: "default",
+  inactive: "destructive",
+};
+
+const statusLabels: Record<string, string> = {
+  prospect: "Prospecto",
+  consultation: "Consulta",
+  proposal: "Proposta",
+  active: "Ativo",
+  inactive: "Inativo",
+};
+
 export default async function ClientsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; status?: string }>;
 }) {
-  const { q } = await searchParams;
-  const clients = await getClients(q);
+  const { q, status } = await searchParams;
+  const clients = await getClients(q, status);
 
   return (
     <div>
@@ -26,17 +51,43 @@ export default async function ClientsPage({
         </Link>
       </div>
 
-      <form className="mb-4">
-        <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            name="q"
-            placeholder="Buscar cliente..."
-            defaultValue={q}
-            className="pl-9"
-          />
+      <div className="flex items-center gap-3 mb-4 flex-wrap">
+        <form className="flex-1 min-w-[200px] max-w-sm">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              name="q"
+              placeholder="Buscar cliente..."
+              defaultValue={q}
+              className="pl-9"
+            />
+            {status && <input type="hidden" name="status" value={status} />}
+          </div>
+        </form>
+
+        <div className="flex items-center gap-1">
+          {pipelineFilters.map((filter) => {
+            const isActive = (status ?? "all") === filter.value;
+            return (
+              <Link
+                key={filter.value}
+                href={`/dashboard/clients?${new URLSearchParams({
+                  ...(q ? { q } : {}),
+                  ...(filter.value !== "all" ? { status: filter.value } : {}),
+                }).toString()}`}
+              >
+                <Button
+                  variant={isActive ? "default" : "ghost"}
+                  size="sm"
+                  className="text-xs h-7 px-2.5"
+                >
+                  {filter.label}
+                </Button>
+              </Link>
+            );
+          })}
         </div>
-      </form>
+      </div>
 
       <div className="bg-card border border-border rounded-xl overflow-hidden">
         <table className="w-full">
@@ -44,7 +95,9 @@ export default async function ClientsPage({
             <tr className="border-b border-border">
               <th className="text-left text-xs font-medium text-muted-foreground p-4">Nome</th>
               <th className="text-left text-xs font-medium text-muted-foreground p-4">Telefone</th>
+              <th className="text-left text-xs font-medium text-muted-foreground p-4">Status</th>
               <th className="text-left text-xs font-medium text-muted-foreground p-4">Patrimônio</th>
+              <th className="text-left text-xs font-medium text-muted-foreground p-4">Última Interação</th>
               <th className="text-left text-xs font-medium text-muted-foreground p-4">Portal</th>
             </tr>
           </thead>
@@ -57,8 +110,18 @@ export default async function ClientsPage({
                   </Link>
                 </td>
                 <td className="p-4 text-sm text-muted-foreground">{client.phone ?? "—"}</td>
+                <td className="p-4">
+                  <Badge variant={statusVariants[client.pipeline_status] ?? "secondary"} className="text-xs">
+                    {statusLabels[client.pipeline_status] ?? "Prospecto"}
+                  </Badge>
+                </td>
                 <td className="p-4 text-sm font-medium">
                   {formatBRLCompact(client.financial_profile?.current_assets ?? 0)}
+                </td>
+                <td className="p-4 text-sm text-muted-foreground">
+                  {client.last_interaction
+                    ? new Date(client.last_interaction.date).toLocaleDateString("pt-BR")
+                    : "—"}
                 </td>
                 <td className="p-4">
                   <Badge variant={client.portal_user_id ? "default" : "secondary"} className="text-xs">
@@ -69,8 +132,8 @@ export default async function ClientsPage({
             ))}
             {clients.length === 0 && (
               <tr>
-                <td colSpan={4} className="p-8 text-center text-sm text-muted-foreground">
-                  {q ? "Nenhum cliente encontrado." : "Nenhum cliente cadastrado ainda."}
+                <td colSpan={6} className="p-8 text-center text-sm text-muted-foreground">
+                  {q || status ? "Nenhum cliente encontrado." : "Nenhum cliente cadastrado ainda."}
                 </td>
               </tr>
             )}

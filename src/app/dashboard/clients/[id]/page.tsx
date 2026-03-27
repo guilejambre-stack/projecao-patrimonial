@@ -50,13 +50,13 @@ export default async function ClientDetailPage({
         {data.client.occupation ?? "Sem ocupação"} · {data.client.email ?? "Sem email"}
       </p>
 
-      <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="personal">Dados Pessoais</TabsTrigger>
-          <TabsTrigger value="financial">Perfil Financeiro</TabsTrigger>
-          <TabsTrigger value="projection">Projeção Patrimonial</TabsTrigger>
-          <TabsTrigger value="goals">Metas</TabsTrigger>
-          <TabsTrigger value="interactions">Interações</TabsTrigger>
+      <Tabs defaultValue="personal" className="space-y-6">
+        <TabsList className="gap-1">
+          <TabsTrigger value="personal" className="text-xs px-3 py-1.5">Dados Pessoais</TabsTrigger>
+          <TabsTrigger value="financial" className="text-xs px-3 py-1.5">Perfil Financeiro</TabsTrigger>
+          <TabsTrigger value="projection" className="text-xs px-3 py-1.5">Projeção Patrimonial</TabsTrigger>
+          <TabsTrigger value="goals" className="text-xs px-3 py-1.5">Metas</TabsTrigger>
+          <TabsTrigger value="interactions" className="text-xs px-3 py-1.5">CRM</TabsTrigger>
         </TabsList>
 
         <TabsContent value="personal">

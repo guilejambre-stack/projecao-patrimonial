@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-export async function getClients(search?: string) {
+export async function getClients(search?: string, pipelineStatus?: string) {
   const supabase = await createClient();
 
   let query = supabase
@@ -11,7 +11,8 @@ export async function getClients(search?: string) {
     .select(`
       *,
       financial_profile (current_assets, monthly_contribution),
-      projection_scenarios (cdi_rate, cdi_percentage, tax_rate, inflation_rate, is_default)
+      projection_scenarios (cdi_rate, cdi_percentage, tax_rate, inflation_rate, is_default),
+      interactions (date, type, summary)
     `)
     .order("updated_at", { ascending: false });
 
@@ -19,9 +20,24 @@ export async function getClients(search?: string) {
     query = query.ilike("full_name", `%${search}%`);
   }
 
+  if (pipelineStatus && pipelineStatus !== "all") {
+    query = query.eq("pipeline_status", pipelineStatus);
+  }
+
   const { data, error } = await query;
   if (error) throw error;
-  return data;
+
+  // Sort interactions to get the latest one per client
+  return (data ?? []).map((client: any) => {
+    const sortedInteractions = (client.interactions ?? []).sort(
+      (a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+    return {
+      ...client,
+      last_interaction: sortedInteractions[0] ?? null,
+      interactions: undefined,
+    };
+  });
 }
 
 export async function createClientAction(formData: FormData) {
